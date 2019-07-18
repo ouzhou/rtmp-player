@@ -22,6 +22,9 @@ var console = {
   }
 };
 
+var videoObj = new Video(800,450);
+videoObj.smoothing = true;
+
 function createLiveStream() {
   nc = new NetConnection();
   nc.addEventListener(NetStatusEvent.NET_STATUS, function(event) {
@@ -36,6 +39,7 @@ function createLiveStream() {
       ns.bufferTime = 3; // 3秒不会卡
       ns.play(streamName);
       videoObj.attachNetStream(ns);
+      addChild(videoObj);
     }
   });
   nc.connect(serverName);
@@ -62,13 +66,9 @@ function startLive(server, stream) {
 
 
 function shot() {
-     var matrix:Matrix = new Matrix();
-   matrix.scale(5, 4);
    
   var imager = new BitmapData(800, 450, true, 0);
-  imager.draw(videoObj, matrix);
-
-
+  imager.draw(videoObj);
 
   var e = new JPEGEncoder(100);  
   var actual_IMG = e.encode(imager);

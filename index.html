@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title>index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css" media="screen">
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #flashContent {
+        width: 800px;
+        height: 450px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="flashContent">
+      <object
+        type="application/x-shockwave-flash"
+        data="index.swf"
+        width="100%"
+        height="100%"
+        id="app"
+        bgcolor="#000000"
+      >
+        <param name="allowfullscreen" value="true" /><param
+          name="allowscriptaccess"
+          value="always"
+        /><param name="wmode" value="opaque" /><param
+          name="menu"
+          value="false"
+        />
+      </object>
+    </div>
+
+    <script>
+      var Ouzzplayer = {
+        shot: function(str) {
+          var bs64 = `data:image/jpeg;base64,${str}`;
+          console.log(bs64);
+          // window.open(bs64);
+        }
+      };
+      const app = document.getElementById("app");
+    </script>
+  </body>
+</html>

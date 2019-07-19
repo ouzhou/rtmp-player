@@ -20,7 +20,7 @@ rtmp 流直播定制 flash 播放器
 - 良好适配 wowza
 - 支持截图 base64
 
-# 使用
+## 使用
 
 ```html
 <object

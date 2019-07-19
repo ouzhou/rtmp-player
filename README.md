@@ -124,3 +124,8 @@ app.pause();
 "NetStream.Play.UnpublishNotify"; //发布停止，信息已经发送到所有订阅者"); //测试发布端是否停止了发布
 "NetStream.Play.InsufficientBW"; //警告！客户端没有足够的带宽，无法以正常速度播放数据"
 ```
+
+## TODO
+
+- togglePause
+- 更好的命名空间解决方案

@@ -4,28 +4,94 @@ rtmp 流直播定制 flash 播放器
 
 ## 为什么要自己写播放器
 
-- 坑爹的videojs flash版本不支持wowza的安全认证
-- aliplayer 对rtmp的流不友好，出错整个播放器就cash，而且他们还悄悄的埋点了，自家的数据被阿里能捕获到就很不开心了
-- jwplayer 要钱，而且开发很麻烦，对flash这块的支持越来越低，文档也不全了
-- 其他百度云等等等云厂商的播放器大部分基于videojs或者老版本jwplayer，不好用
-- 剩下的都是h5播放器，不支持rtmp
+- videojs-flash 不支持 wowza 的安全认证
+- aliplayer 对 rtmp 的流不友好，出错整个播放器无法自动重连，而且他们做了埋点
+- jwplayer 要钱，而且开发很麻烦，对 flash 这块的支持越来越低，文档也不全了
+- 其他百度云等等等云厂商的播放器大部分基于 videojs 不好用
+- 剩下的都是 h5 播放器，不支持 rtmp
 
-## 开发
+## 开发环境
 
 - animate cc
 - flex_sdk_4.6
 
 ## 特性
 
-- video smoothing 播放更顺滑
 - 良好适配 wowza
 - 支持截图 base64
 
-# 接口
+# 使用
+
+```html
+<object
+  type="application/x-shockwave-flash"
+  data="index.swf"
+  width="100%"
+  height="100%"
+  id="app"
+  bgcolor="#000000"
+>
+  <param name="allowfullscreen" value="true" />
+  <param name="allowscriptaccess" value="always" />
+  <param name="wmode" value="opaque" />
+  <param name="menu" value="false" />
+</object>
+```
 
 ```js
-startLive(server, stream)
-stopLive()
-snapshot() // 截图完成后会调用 Ouzzplayer.snapshot(base64)
-pause() // 暂停，因为是直播流，暂停后不提供续播的功能
+// 因为加载 swf 是异步操作，需要等待swf加载完成后才能进行调用
+// 但是因为 swf 文件的 onload 并不会调用
+// 解决办法有两种
+// 1 在 swf 里面调用一个 js 方法通知(考虑到在react组件中使用，暂无实现) 
+// 2 用定时器判断加载状态
+const app = document.getElementById("app");
+let timer = null;
+const canPlay = new Promise((res, rej) => {
+  timer = setInterval(() => {
+    try {
+      if (app.PercentLoaded() === 100) {
+        clearInterval(timer); // 加载完成
+        res();
+      }
+    } catch (e) {}
+  }, 50);
+});
+
+canPlay.then(() => {
+  app.startLive(
+    "rtmp://cyberplayerplay.kaywang.cn/cyberplayer/",
+    "demo201711-L1"
+  );
+});
+```
+
+```js
+// 播放 rtmp 流
+const app = document.getElementById("app");
+app.startLive(
+  "rtmp://cyberplayerplay.kaywang.cn/cyberplayer/",
+  "demo201711-L1"
+);
+```
+
+```js
+// base64 截图
+const app = document.getElementById("app");
+const Ouzzplayer = {
+  snapshot(str) {
+    const bs64 = `data:image/jpeg;base64,${str}`;
+    console.log(bs64);
+  }
+};
+app.snapshot();
+```
+
+```js
+// 停止直播
+app.stopLive();
+```
+
+```js
+// 暂停直播，因为是直播流，暂停后不提供续播的功能
+app.pause();
 ```

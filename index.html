@@ -40,18 +40,26 @@
     </div>
 
     <script>
-      var Ouzzplayer = {
-        snapshot: function(str) {
-          var bs64 = `data:image/jpeg;base64,${str}`;
+      const Ouzzplayer = {
+        snapshot(str) {
+          const bs64 = `data:image/jpeg;base64,${str}`;
           console.log(bs64);
+        },
+        status(code) {
+          console.log(code);
         }
       };
+
       const app = document.getElementById("app");
 
-      function t(){
-        app.startLive("rtmp://cyberplayerplay.kaywang.cn/cyberplayer/", "demo201711-L1");
+      function a() {
+        app.startLive(
+          "rtmp://cyberplayerplay.kaywang.cn/cyberplayer/",
+          "demo201711-L1"
+        );
       }
-      function s(){
+
+      function b() {
         app.snapshot();
       }
     </script>

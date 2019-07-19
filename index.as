@@ -5,27 +5,27 @@ var nc = null;
 var ns = null;
 var serverName;
 var streamName;
+var videoObj = new Video(800, 450);
 
-function log(value) {
+videoObj.smoothing = true;
+
+function info(value) {
   try {
-    ExternalInterface.call("console.log", value);
+    ExternalInterface.call("Ouzzplayer.status", value);
   } catch (err) {
     // empty
   }
 }
 
-var videoObj = new Video(800, 450);
-videoObj.smoothing = true;
-
 function createLiveStream() {
   nc = new NetConnection();
   nc.client = this;
   nc.addEventListener(NetStatusEvent.NET_STATUS, function(event) {
-    log("nc: " + event.info.code);
+    info(event.info.code);
     if (event.info.code == "NetConnection.Connect.Success") {
       ns = new NetStream(nc);
       ns.addEventListener(NetStatusEvent.NET_STATUS, function(event) {
-        log("ns: " + event.info.code);
+        info(event.info.code);
       });
       var nsClientObj = new Object();
       ns.client = nsClientObj;
@@ -84,6 +84,7 @@ try {
   ExternalInterface.addCallback("stopLive", destoryLiveStream);
   ExternalInterface.addCallback("snapshot", snapshot);
   ExternalInterface.addCallback("pause", pause);
+  ExternalInterface.call("console.log", 'player is ok');
 } catch (err) {
    // empty
 }

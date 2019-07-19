@@ -42,7 +42,7 @@ rtmp 流直播定制 flash 播放器
 // 因为加载 swf 是异步操作，需要等待swf加载完成后才能进行调用
 // 但是因为 swf 文件的 onload 并不会调用
 // 解决办法有两种
-// 1 在 swf 里面调用一个 js 方法通知(考虑到在react组件中使用，暂无实现) 
+// 1 在 swf 里面调用一个 js 方法通知(考虑到在react组件中使用，暂无实现)
 // 2 用定时器判断加载状态
 const app = document.getElementById("app");
 let timer = null;
@@ -94,4 +94,33 @@ app.stopLive();
 ```js
 // 暂停直播，因为是直播流，暂停后不提供续播的功能
 app.pause();
+```
+
+```js
+// rtmp 流状态 用于封装开发做 loading 或者显示播放状态
+
+"NetConnection.Connect.Success"; //服务器连接成功
+"NetConnection.Connect.Closed"; //连接中断
+"NetConnection.Connect.Failed"; //连接失败"
+"NetConnection.Connect.Rejected"; //没有权限"
+"NetStream.Play.Reset"; //播放列表重置"
+"NetStream.Play.Start"; //播放开始"
+"NetStream.Buffer.Empty"; //视频正在缓冲"
+"NetStream.Buffer.Full"; //缓冲区已填满"
+"NetStream.Play.StreamNotFound"; //找不到此视频");
+"NetStream.Play.Stop"; //视频播放完成");
+"NetStream.Pause.Notify"; //流已暂停"
+"NetStream.Unpause.Notify"; //流已恢复"
+"NetStream.Seek.Failed"; //搜寻失败"
+"NetStream.SeekStart.Notify"; //搜寻开始"
+"NetStream.Seek.Notify"; //正在搜寻……"
+"NetStream.Seek.Complete"; //搜寻完毕"
+"NetStream.Publish.Start"; //发布开始"
+"NetStream.Unpublish.Success"; //停止发布"
+"NetStream.Record.Start"; //开始录制"
+"NetStream.Record.Stop"; //停止录制"
+"NetStream.Publish.BadName"; //警告！试图发布已经被他人发布的流"
+"NetStream.Play.PublishNotify"; //发布开始，信息已经发送到所有订阅者"); //测试发布端有没在发布
+"NetStream.Play.UnpublishNotify"; //发布停止，信息已经发送到所有订阅者"); //测试发布端是否停止了发布
+"NetStream.Play.InsufficientBW"; //警告！客户端没有足够的带宽，无法以正常速度播放数据"
 ```

@@ -41,13 +41,19 @@
 
     <script>
       var Ouzzplayer = {
-        shot: function(str) {
+        snapshot: function(str) {
           var bs64 = `data:image/jpeg;base64,${str}`;
           console.log(bs64);
-          // window.open(bs64);
         }
       };
       const app = document.getElementById("app");
+
+      function t(){
+        app.startLive("rtmp://cyberplayerplay.kaywang.cn/cyberplayer/", "demo201711-L1");
+      }
+      function s(){
+        app.snapshot();
+      }
     </script>
   </body>
 </html>

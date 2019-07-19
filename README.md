@@ -20,3 +20,12 @@ rtmp 流直播定制 flash 播放器
 - video smoothing 播放更顺滑
 - 良好适配 wowza
 - 支持截图 base64
+
+# 接口
+
+```js
+startLive(server, stream)
+stopLive()
+snapshot() // 截图完成后会调用 Ouzzplayer.snapshot(base64)
+pause() // 暂停，因为是直播流，暂停后不提供续播的功能
+```

@@ -1,7 +1,3 @@
-// 文档参考
-// https://www.cnblogs.com/savageworld/archive/2006/07/28/462434.html
-// https://www.oschina.net/uploads/doc/flex-doc-3.2/flash/net/NetStream.html
-
 import mx.utils.Base64Encoder;
 import mx.graphics.codec.JPEGEncoder;
 
@@ -10,29 +6,26 @@ var ns = null;
 var serverName;
 var streamName;
 
-var console = {
-  info: function(value) {
-    ExternalInterface.call("console.info", value);
-  },
-  log: function(value) {
+function log(value) {
+  try {
     ExternalInterface.call("console.log", value);
-  },
-  error: function(value) {
-    ExternalInterface.call("console.error", value);
+  } catch (err) {
+    // empty
   }
-};
+}
 
-var videoObj = new Video(800,450);
+var videoObj = new Video(800, 450);
 videoObj.smoothing = true;
 
 function createLiveStream() {
   nc = new NetConnection();
+  nc.client = this;
   nc.addEventListener(NetStatusEvent.NET_STATUS, function(event) {
-    console.info("nc: " + event.info.code);
+    log("nc: " + event.info.code);
     if (event.info.code == "NetConnection.Connect.Success") {
       ns = new NetStream(nc);
       ns.addEventListener(NetStatusEvent.NET_STATUS, function(event) {
-        console.info("ns: " + event.info.code);
+        log("ns: " + event.info.code);
       });
       var nsClientObj = new Object();
       ns.client = nsClientObj;
@@ -56,7 +49,6 @@ function destoryLiveStream() {
   }
 }
 
-// 不做校验，自己调用出不可能出问题
 function startLive(server, stream) {
   serverName = server;
   streamName = stream;
@@ -64,31 +56,36 @@ function startLive(server, stream) {
   createLiveStream();
 }
 
-
-function shot() {
-   
+function snapshot() {
   var imager = new BitmapData(800, 450, true, 0);
   imager.draw(videoObj);
 
-  var e = new JPEGEncoder(100);  
+  var e = new JPEGEncoder(100);
   var actual_IMG = e.encode(imager);
 
   var b64 = new Base64Encoder();
   b64.encodeBytes(actual_IMG);
-  // Ouzzplayer
-  ExternalInterface.call("Ouzzplayer.shot", b64.toString());
 
+  try {
+    ExternalInterface.call("Ouzzplayer.snapshot", b64.toString());
+  } catch (err) {
+    // empty
+  }
 }
 
-// TODO
-// function pause() {}
-
-startLive("rtmp://cyberplayerplay.kaywang.cn/cyberplayer/", "demo201711-L1");
+function pause() {
+  if (ns != null) {
+    ns.pause();
+  }
+}
 
 try {
   ExternalInterface.addCallback("startLive", startLive);
   ExternalInterface.addCallback("stopLive", destoryLiveStream);
-  ExternalInterface.addCallback("shot", shot);
+  ExternalInterface.addCallback("snapshot", snapshot);
+  ExternalInterface.addCallback("pause", pause);
 } catch (err) {
-  console.error(err);
+   // empty
 }
+
+// startLive("rtmp://cyberplayerplay.kaywang.cn/cyberplayer/", "demo201711-L1");

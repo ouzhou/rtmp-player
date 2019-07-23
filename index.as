@@ -1,6 +1,12 @@
 import mx.utils.Base64Encoder;
 import mx.graphics.codec.JPEGEncoder;
 
+
+var doMain = stage.loaderInfo.url;
+var currSwfUrl = doMain.substring(0,doMain.lastIndexOf("/"));
+
+Security.loadPolicyFile(currSwfUrl + "/crossdomain.xml");
+
 var nc = null;
 var ns = null;
 var serverName;

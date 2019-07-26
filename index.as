@@ -85,11 +85,25 @@ function pause() {
   }
 }
 
+function resume() {
+  if (ns != null) {
+    ns.resume();
+  }
+}
+
+function togglePause() {
+  if (ns != null) {
+    ns.togglePause();
+  }
+}
+
 try {
   ExternalInterface.addCallback("startLive", startLive);
   ExternalInterface.addCallback("stopLive", destoryLiveStream);
   ExternalInterface.addCallback("snapshot", snapshot);
   ExternalInterface.addCallback("pause", pause);
+  ExternalInterface.addCallback("resume", resume);
+  ExternalInterface.addCallback("togglePause", togglePause);
   ExternalInterface.call("console.log", 'player is ok');
 } catch (err) {
    // empty

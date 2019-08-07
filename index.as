@@ -2,10 +2,11 @@ import mx.utils.Base64Encoder;
 import mx.graphics.codec.JPEGEncoder;
 
 
-var doMain = stage.loaderInfo.url;
-var currSwfUrl = doMain.substring(0,doMain.lastIndexOf("/"));
+// var doMain = stage.loaderInfo.url;
+// var currSwfUrl = doMain.substring(0,doMain.lastIndexOf("/"));
 
-Security.loadPolicyFile(currSwfUrl + "/crossdomain.xml");
+// Security.loadPolicyFile(currSwfUrl + "/crossdomain.xml");
+// Security.loadPolicyFile("http://stream.morecanai.com:1935/stage/crossdomain.xml");
 
 var nc = null;
 var ns = null;
@@ -35,7 +36,7 @@ function createLiveStream() {
       });
       var nsClientObj = new Object();
       ns.client = nsClientObj;
-      ns.bufferTime = 3; // 3秒不会卡
+      ns.bufferTime = 1; // 3秒不会卡
       ns.play(streamName);
       videoObj.attachNetStream(ns);
       addChild(videoObj);
@@ -63,19 +64,19 @@ function startLive(server, stream) {
 }
 
 function snapshot() {
-  var imager = new BitmapData(800, 450, true, 0);
-  imager.draw(videoObj);
+  try{
+    var imager = new BitmapData(800, 450, true, 0);
+    imager.draw(videoObj);
 
-  var e = new JPEGEncoder(100);
-  var actual_IMG = e.encode(imager);
+    var e = new JPEGEncoder(100);
+    var actual_IMG = e.encode(imager);
 
-  var b64 = new Base64Encoder();
-  b64.encodeBytes(actual_IMG);
+    var b64 = new Base64Encoder();
+    b64.encodeBytes(actual_IMG);
 
-  try {
-    ExternalInterface.call("Ouzzplayer.snapshot", b64.toString());
-  } catch (err) {
-    // empty
+    return b64.toString();
+  }catch(err) {
+    info(err)
   }
 }
 
@@ -109,4 +110,10 @@ try {
    // empty
 }
 
-// startLive("rtmp://cyberplayerplay.kaywang.cn/cyberplayer/", "demo201711-L1");
+// startLive("rtmp://192.168.0.216:1935/", "vod");
+
+// startLive("rtmp://cyberplayerplay.kayw ang.cn/cyberplayer/", "demo201711-L1");
+
+// startLive("rtmp://stream.morecanai.com/stage/", "138424375820?morecantokenendtime=1564135106&morecantokenstarttime=1564134506&morecantokenhash=4cOHKVtkXE2pgGDX5Fco2BebtSKbDlOJyyGq60P6HC4=");
+
+// setTimeout(snapshot, 4000);

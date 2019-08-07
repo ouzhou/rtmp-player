@@ -29,22 +29,17 @@
         id="app"
         bgcolor="#000000"
       >
-        <param name="allowfullscreen" value="true" /><param
-          name="allowscriptaccess"
-          value="always"
-        /><param name="wmode" value="opaque" /><param
-          name="menu"
-          value="false"
-        />
+        <param name="allowScriptAccess" value="always" />
+        <param name="allowNetworking" value="all" />
+        <param name="allowfullscreen" value="true" />
+        <param name="allowscriptaccess" value="always" />
+        <param name="wmode" value="opaque" />
+        <param name="menu" value="false" />
       </object>
     </div>
 
     <script>
       const Ouzzplayer = {
-        snapshot(str) {
-          const bs64 = `data:image/jpeg;base64,${str}`;
-          console.log(bs64);
-        },
         status(code) {
           console.log(code);
         }
@@ -52,15 +47,28 @@
 
       const app = document.getElementById("app");
 
-      function a() {
-        app.startLive(
-          "rtmp://cyberplayerplay.kaywang.cn/cyberplayer/",
-          "demo201711-L1"
-        );
-      }
+      // function a() {
+      //   app.startLive(
+      //     "rtmp://cyberplayerplay.kaywang.cn/cyberplayer/",
+      //     "demo201711-L1"
+      //   );
+      // }
+
+      // function a() {
+      //   app.startLive("rtmp://192.168.0.216:1935/vod", "mp4:sample.mp4");
+      // }
+
+      // function a() {
+      //   app.startLive(
+      //     "rtmp://stream.morecanai.com/stage/",
+      //     "92516865050060?morecantokenendtime=1564128270&morecantokenstarttime=1564127670&morecantokenhash=4ROT9Xui9LiYcGJtgZUVysjLYFdNpIh11JdOWpljUeI="
+      //   );
+      // }
 
       function b() {
-        app.snapshot();
+        var be = app.snapshot();
+        const bs64 = `data:image/jpeg;base64,${be}`;
+        console.log(bs64);
       }
     </script>
   </body>

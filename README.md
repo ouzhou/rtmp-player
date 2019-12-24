@@ -50,7 +50,7 @@ let timer = null;
 const canPlay = new Promise((res, rej) => {
   timer = setInterval(() => {
     try {
-      if (app.PercentLoaded() === 100) {
+      if (app.startLive) {
         clearInterval(timer); // 加载完成
         res();
       }
